@@ -36,3 +36,27 @@ class StatTracker(QtWidgets.QWidget):
         layout.setContentsMargins(20, 10, 20, 10)
 
         self.setLayout(layout)
+
+    def getLabelText(self):
+        return(self._label.text())
+
+    def setLabelText(self, text):
+        self._label.setText(text)
+
+    def getSpinBoxMax(self):
+        return(self._spinbox.maximum())
+
+    def setSpinBoxMax(self, max):
+        self._spinbox.setMaximum(max)
+
+    def getSpinBoxMin(self):
+        return(self._spinbox.minimum())
+
+    def setSpinBoxMin(self, min):
+        self._spinbox.setMinimum(min)
+
+    def getSpinBoxValue(self):
+        return self._spinbox.value()
+
+    def setSpinBoxValue(self, value):
+        self._spinbox.setValue(value)
