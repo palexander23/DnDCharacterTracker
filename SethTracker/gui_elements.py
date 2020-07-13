@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5 import QtGui, QtWidgets
+
 
 class StatTracker(QtWidgets.QWidget):
 
@@ -7,7 +7,7 @@ class StatTracker(QtWidgets.QWidget):
         super(StatTracker, self).__init__()
 
         self._label = QtWidgets.QLabel(self, text=label_text)
-        
+
         label_font = QtGui.QFont()
         label_font.setBold(True)
         label_font.setPointSize(11)
@@ -20,7 +20,7 @@ class StatTracker(QtWidgets.QWidget):
         self._spinbox.setMaximum(max_value)
         self._spinbox.setMinimum(min_value)
         self._spinbox.setValue(current_value)
-        
+
         # Set spinbox font
         spinbox_font = QtGui.QFont()
         spinbox_font.setPointSize(label_font.pointSize())
