@@ -60,3 +60,6 @@ class StatTracker(QtWidgets.QWidget):
 
     def setSpinBoxValue(self, value):
         self._spinbox.setValue(value)
+
+    def spinBoxSignal(self):
+        return(self._spinbox.valueChanged)
