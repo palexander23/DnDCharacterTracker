@@ -28,14 +28,15 @@ class StatTracker(QtWidgets.QWidget):
         self._spinbox.setFont(spinbox_font)
 
         # Create HBox layout and add above widgets
-        layout = QtWidgets.QHBoxLayout(self)
+        layout = QtWidgets.QGridLayout(self)
 
-        layout.addWidget(self._label)
-        layout.addWidget(self._spinbox)
+        layout.addWidget(self._label, 0, 0, 1, 4)
+        layout.addWidget(self._spinbox, 0, 5, 1, 1)
 
         layout.setContentsMargins(20, 2, 20, 0)
 
         self.setLayout(layout)
+        self._spinbox.setFixedWidth(50)
 
     def getLabelText(self):
         return(self._label.text())
