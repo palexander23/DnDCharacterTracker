@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 import sys
 
 from gui_elements import StatTracker as tracker
@@ -31,17 +31,24 @@ class SethTracker(QtWidgets.QMainWindow):
         bardic_layout = QtWidgets.QVBoxLayout()
         bardic_layout.addWidget(bard_insp_track)
 
-        # Create set of group boxes
+        # Create set of group boxes and apply title font
+        box_title_font = QtGui.QFont()
+        box_title_font.setPointSize(11)
+        box_title_font.setWeight(59)
+
         health_group = QtWidgets.QGroupBox()
         health_group.setTitle("Health")
+        health_group.setFont(box_title_font)
         health_group.setLayout(health_layout)
 
         spells_group = QtWidgets.QGroupBox()
         spells_group.setTitle("Spell Slots")
+        spells_group.setFont(box_title_font)
         spells_group.setLayout(spells_layout)
 
         bardic_group = QtWidgets.QGroupBox()
         bardic_group.setTitle("Bardic Abilities")
+        bardic_group.setFont(box_title_font)
         bardic_group.setLayout(bardic_layout)
 
         # Create central layout to house all sublayouts
