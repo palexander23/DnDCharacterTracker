@@ -35,7 +35,9 @@ def test_stat_tracker(qtbot):
     def saveValue(test_list):
         test_list[0] = stat_tracker_widget.getSpinBoxValue()
 
-    stat_tracker_widget.spinBoxSignal()[int].connect(lambda: saveValue(test_value))
+    stat_tracker_widget.spinBoxSignal()[int].connect(
+        lambda: saveValue(test_value)
+    )
 
     stat_tracker_widget.setSpinBoxValue(4)
     assert test_value[0] == 4
@@ -45,6 +47,6 @@ def test_stat_tracker(qtbot):
 
     stat_tracker_widget.setSpinBoxValue(999)
     assert test_value[0] == stat_tracker_widget.getSpinBoxMax()
-    
+
     stat_tracker_widget.setSpinBoxValue(-999)
     assert test_value[0] == stat_tracker_widget.getSpinBoxMin()
