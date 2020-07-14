@@ -3,12 +3,13 @@ import sys
 
 from gui_elements import StatTracker as tracker
 
+
 class SethTracker(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(SethTracker, self).__init__(*args, **kwargs)
 
         self.setWindowTitle("Seth Tracker")
-        
+
         # Construct all the stat trackers
         hp_track = tracker("HP:", 22, 22)
         temp_hp_track = tracker("Temp HP:", 0, 999)
