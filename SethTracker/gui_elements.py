@@ -33,7 +33,7 @@ class StatTracker(QtWidgets.QWidget):
         layout.addWidget(self._label)
         layout.addWidget(self._spinbox)
 
-        layout.setContentsMargins(20, 10, 20, 10)
+        layout.setContentsMargins(20, 2, 20, 0)
 
         self.setLayout(layout)
 
