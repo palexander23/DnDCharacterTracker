@@ -1,2 +1,4 @@
 pyqt5
-pyinstallerpyth
+pyinstaller
+pytest
+pytest-qt
