@@ -64,6 +64,12 @@ class SethTracker(QtWidgets.QMainWindow):
         bardic_group.setFont(box_title_font)
         bardic_group.setLayout(bardic_layout)
 
+        # Create long rest button
+        long_rest_button = QtWidgets.QPushButton()
+        long_rest_button.setText("Long Rest")
+        long_rest_button.setFont(box_title_font)
+        long_rest_button.clicked.connect(self.long_rest)
+
         # Create central layout to house all sublayouts
         self._central_widget = QtWidgets.QWidget()
         self.setCentralWidget(self._central_widget)
@@ -72,7 +78,33 @@ class SethTracker(QtWidgets.QMainWindow):
         top_layout.addWidget(health_group)
         top_layout.addWidget(spells_group)
         top_layout.addWidget(bardic_group)
+        top_layout.addWidget(long_rest_button)
 
+    def long_rest(self):
+        # Reset HP
+        self._stat_tracker_list[0].setSpinBoxValue(
+            self._stat_tracker_list[0].getSpinBoxMax()
+        )
+
+        # Add half of Hit Dice
+        self._stat_tracker_list[2].setSpinBoxValue(
+            self._stat_tracker_list[2].getSpinBoxValue() + 
+            self._stat_tracker_list[2].getSpinBoxMax()/2
+        )
+
+        # Reset Spell Slots
+        self._stat_tracker_list[3].setSpinBoxValue(
+            self._stat_tracker_list[3].getSpinBoxMax()
+        )
+
+        self._stat_tracker_list[4].setSpinBoxValue(
+            self._stat_tracker_list[4].getSpinBoxMax()
+        )
+
+        # Reset Bardic Inspiration
+        self._stat_tracker_list[5].setSpinBoxValue(
+            self._stat_tracker_list[5].getSpinBoxMax()
+        )
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
