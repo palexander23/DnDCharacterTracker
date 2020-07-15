@@ -42,16 +42,31 @@ class JSONBackend():
             )
 
     def process_value_change(self, stat_tracker: StatTracker):
+        """ Used as the slot to the value changed signals of the StatTrackers
+        
+        Gets the new value and the label of the tracker from the StatTracker
+        it is passed at when the signal-slot relationship is built.
+
+        :param stat_tracker: The tracker that this slot is assigned to 
+        """
         print("Stat Tracker: {}".format(stat_tracker.getLabelText()))
         print("Value Now:    {}".format(stat_tracker.getSpinBoxValue()))
 
 
     def init_json_file(self):
+        """ Initialise the file handling functionality of the backend
+        """
+        # Check to see whether a file needs to be made from scratch
         if not os.path.isfile(self.json_file_path):
             self.create_json_file()
             return
 
+
+
     def create_json_file(self):
+        """ Generate a new JSON file based on stat values given in the gui
+        initialisation.
+        """
             with open(self.json_file_path, "w") as json_file:
                 json.dump(self.stat_tracker_list,
                           json_file,
