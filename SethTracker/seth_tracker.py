@@ -10,6 +10,9 @@ class SethTracker(QtWidgets.QMainWindow):
 
         self.setWindowTitle("Seth Tracker")
 
+        self.initGui()
+
+    def initGui(self):
         # Construct all the stat trackers
         hp_track = tracker("HP:", 22, 22)
         temp_hp_track = tracker("Temp HP:", 0, 999)
