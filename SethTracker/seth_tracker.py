@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets, QtGui
 import sys
 
 from gui_elements import StatTracker as tracker
+from backend import JSONBackend
 
 
 class SethTracker(QtWidgets.QMainWindow):
@@ -10,6 +11,11 @@ class SethTracker(QtWidgets.QMainWindow):
 
         self.setWindowTitle("Seth Tracker")
 
+        self.initGui()
+        
+        self._backend = JSONBackend(self._stat_tracker_list, "./data.json")
+
+    def initGui(self):
         # Construct all the stat trackers
         hp_track = tracker("HP:", 22, 22)
         temp_hp_track = tracker("Temp HP:", 0, 999)
@@ -17,6 +23,13 @@ class SethTracker(QtWidgets.QMainWindow):
         lv1_spell_track = tracker("Lv.1 Spell Slots:", 1, 4)
         lv2_spell_track = tracker("Lv.2 Spell Slots:", 1, 3)
         bard_insp_track = tracker("Bardic Inspiration:", 2, 3)
+
+        self._stat_tracker_list = [hp_track,
+                                   temp_hp_track,
+                                   hit_dice_track,
+                                   lv1_spell_track,
+                                   lv2_spell_track,
+                                   bard_insp_track]
 
         # Group trackers into catagories
         health_layout = QtWidgets.QVBoxLayout()
