@@ -19,7 +19,7 @@ class SethTracker(QtWidgets.QMainWindow):
         # Construct all the stat trackers
         hp_track = tracker("HP:", 22, 22)
         temp_hp_track = tracker("Temp HP:", 0, 999)
-        hit_dice_track = tracker("Hit Dice", 2, 4)
+        hit_dice_track = tracker("Hit Dice:", 2, 4)
         lv1_spell_track = tracker("Lv.1 Spell Slots:", 1, 4)
         lv2_spell_track = tracker("Lv.2 Spell Slots:", 1, 3)
         bard_insp_track = tracker("Bardic Inspiration:", 2, 3)
