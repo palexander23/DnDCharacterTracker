@@ -13,7 +13,7 @@ class SethTracker(QtWidgets.QMainWindow):
 
         self.initGui()
         
-        self._backend = JSONBackend(self._stat_tracker_list)
+        self._backend = JSONBackend(self._stat_tracker_list, "./data.json")
 
     def initGui(self):
         # Construct all the stat trackers

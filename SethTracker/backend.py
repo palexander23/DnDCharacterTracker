@@ -1,11 +1,32 @@
 import json
+import os
 
 from gui_elements import StatTracker
 
 
+class StatTrackerCODEC(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, StatTracker):
+            # Create dictionary from o
+            tracker_dict = {
+                "__stat_tracker__": True,
+                "label": o.getLabelText(),
+                "value": o.getSpinBoxValue(),
+                "min": o.getSpinBoxMin(),
+                "max": o.getSpinBoxMax()
+            }
+
+            return(tracker_dict)
+
+        else:
+            return super().default(o)
+
 class JSONBackend():
-    def __init__(self, _stat_tracker_list: [StatTracker]):
+    def __init__(self, _stat_tracker_list: [StatTracker], _json_file_path):
         self.stat_tracker_list = _stat_tracker_list
+        self.json_file_path = _json_file_path
+
+        self.init_json_file()
 
         # Function for generating the slot functions
         # Each lambda function is tied to a tracker variable
@@ -23,3 +44,18 @@ class JSONBackend():
     def process_value_change(self, stat_tracker: StatTracker):
         print("Stat Tracker: {}".format(stat_tracker.getLabelText()))
         print("Value Now:    {}".format(stat_tracker.getSpinBoxValue()))
+
+
+    def init_json_file(self):
+        if not os.path.isfile(self.json_file_path):
+            self.create_json_file()
+            return
+
+    def create_json_file(self):
+            with open(self.json_file_path, "w") as json_file:
+                json.dump(self.stat_tracker_list,
+                          json_file,
+                          cls=StatTrackerCODEC,
+                          indent=4)
+
+            
