@@ -8,18 +8,21 @@ class StatTrackerCODEC(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, StatTracker):
             # Create dictionary from o
-            tracker_dict = {
-                "__stat_tracker__": True,
-                "label": o.getLabelText(),
-                "value": o.getSpinBoxValue(),
-                "min": o.getSpinBoxMin(),
-                "max": o.getSpinBoxMax()
-            }
-
+            tracker_dict = self.tracker_to_dict(o)
             return(tracker_dict)
 
         else:
             return super().default(o)
+
+    def tracker_to_dict(self, tracker: StatTracker):
+        tracker_dict = {
+                "__stat_tracker__": True,
+                "label": tracker.getLabelText(),
+                "value": tracker.getSpinBoxValue(),
+                "min": tracker.getSpinBoxMin(),
+                "max": tracker.getSpinBoxMax()
+            }
+        return(tracker_dict)
 
 class JSONBackend():
     def __init__(self, _stat_tracker_list: [StatTracker], _json_file_path):
@@ -49,28 +52,58 @@ class JSONBackend():
 
         :param stat_tracker: The tracker that this slot is assigned to 
         """
-        print("Stat Tracker: {}".format(stat_tracker.getLabelText()))
-        print("Value Now:    {}".format(stat_tracker.getSpinBoxValue()))
+        
+        # Find the dict in the dict list with the right label
+        dict_index = next(i for i, item in enumerate(self._json_dicts) 
+                          if item["label"] == stat_tracker.getLabelText())
 
+        # Set dict list value and write to disk
+        self._json_dicts[dict_index]["value"] = stat_tracker.getSpinBoxValue()
+        self.save_json_changes()
 
     def init_json_file(self):
         """ Initialise the file handling functionality of the backend
         """
         # Check to see whether a file needs to be made from scratch
         if not os.path.isfile(self.json_file_path):
-            self.create_json_file()
-            return
-
-
-
-    def create_json_file(self):
-        """ Generate a new JSON file based on stat values given in the gui
-        initialisation.
-        """
             with open(self.json_file_path, "w") as json_file:
-                json.dump(self.stat_tracker_list,
-                          json_file,
-                          cls=StatTrackerCODEC,
-                          indent=4)
+                json_file.write("[]")
 
-            
+        # If a file exists, read its contents
+        with open(self.json_file_path, "r") as json_file:
+            self._json_dicts = json.load(json_file)
+
+        # Extract a list of labels from the json file 
+        json_labels = [tracker["label"] for tracker in self._json_dicts]
+
+        # Copy the stat tracker list
+        # Remove those that are represented in the JSON
+        unrepresented_trackers = [tracker 
+                                  for tracker in self.stat_tracker_list
+                                  if tracker.getLabelText() not in json_labels]
+
+        if unrepresented_trackers:
+            self.add_unrepresented_trackers(unrepresented_trackers)
+
+    def save_json_changes(self):
+        """ Save changes to the json_dict member to disk """
+        with open(self.json_file_path, "w") as json_file:
+            json.dump(self.stat_tracker_list,
+                        json_file,
+                        cls=StatTrackerCODEC,
+                        indent=4)
+
+    def add_unrepresented_trackers(self, trackers):
+        """Add unrepresented trackers to the JSON file
+        :param trackers: List of unrepresented trackers
+        """
+
+        # Parse trackers into dict
+        unrepresented_dict = [StatTrackerCODEC().tracker_to_dict(tracker) 
+                              for tracker in trackers]
+
+        # Add unrepresented trackers to central dictionary
+        self._json_dicts = self._json_dicts + unrepresented_dict
+
+        # Copy central dictionary to disk
+        self.save_json_changes()
