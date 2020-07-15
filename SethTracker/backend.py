@@ -54,8 +54,7 @@ class JSONBackend():
         """
         
         # Find the dict in the dict list with the right label
-        dict_index = next(i for i, item in enumerate(self._json_dicts) 
-                          if item["label"] == stat_tracker.getLabelText())
+        dict_index = self.get_dict_index(stat_tracker.getLabelText())
 
         # Set dict list value and write to disk
         self._json_dicts[dict_index]["value"] = stat_tracker.getSpinBoxValue()
@@ -85,6 +84,14 @@ class JSONBackend():
         if unrepresented_trackers:
             self.add_unrepresented_trackers(unrepresented_trackers)
 
+        # Finally, set the parameters of the StatTrackers from the JSON file
+        for tracker in self.stat_tracker_list:
+            dict_index = self.get_dict_index(tracker.getLabelText())
+
+            tracker.setSpinBoxValue(self._json_dicts[dict_index]["value"])
+            tracker.setSpinBoxMin(self._json_dicts[dict_index]["min"])
+            tracker.setSpinBoxMax(self._json_dicts[dict_index]["max"])
+
     def save_json_changes(self):
         """ Save changes to the json_dict member to disk """
         with open(self.json_file_path, "w") as json_file:
@@ -107,3 +114,12 @@ class JSONBackend():
 
         # Copy central dictionary to disk
         self.save_json_changes()
+
+    def get_dict_index(self, label: str):
+        """ Get the index of the json_dicts entry with the given label
+
+        :param label: The label of the required dict
+        """
+
+        return(next(i for i, item in enumerate(self._json_dicts) 
+                    if item["label"] == label))
